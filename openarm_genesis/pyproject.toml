@@ -1,0 +1,11 @@
+[project]
+name = "openarm-genesis"
+version = "0.1.0"
+description = "OpenArm Simulation with Genesis"
+readme = "README_Genesis.md"
+requires-python = ">=3.12"
+dependencies = [
+    "torch",
+    "torchvision",
+    "genesis-world",
+]
