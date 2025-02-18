@@ -2,8 +2,12 @@
 
 1. [Install conda](https://conda-forge.org/download/)
 
-2. Set up a conda virtual environment (or run ./setup_env.sh)
+2. Change to the openarm_genesis directory:
+```sh
+cd openarm_genesis
+```
 
+3. Set up a conda virtual environment
 ```sh
 conda env create -f environment.yaml
 conda activate openarm_genesis
