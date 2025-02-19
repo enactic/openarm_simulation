@@ -2,7 +2,7 @@ import os
 import torch
 import genesis as gs
 import pathlib
-import math
+from enum import Enum
 
 os.environ["PYOPENGL_PLATFORM"] = "glx"
 
@@ -19,6 +19,10 @@ assert len(KP) == len(KV) == len(JOINT_NAMES) == len(FORCE_LOWER) == len(FORCE_U
 
 USE_GPU = False
 
+class RobotModelType(Enum):
+    MJCF = 1
+    URDF = 2
+ROBOT_MODEL = RobotModelType.MJCF
 
 def main() -> None:
     print("Setting up genesis")
@@ -42,23 +46,27 @@ def main() -> None:
     BASE_EULER = (0, 0, 0)  # degrees
     HORIZONTAL_EULER = (0, 90, 90)  # degrees
 
-    openarm: gs.engine.entities.rigid_entity.rigid_entity.RigidEntity = scene.add_entity(
-        # gs.morphs.URDF(
-        #     file=urdf_str,
-        #     pos=POS_ORIGIN,
-        #     euler=BASE_EULER,
-        #     fixed=True,
-        #     collision=True
-        # ),
-        gs.morphs.MJCF(
-            file=mjcf_str,
-            pos=POS_ORIGIN,
-            euler=BASE_EULER,
-            collision=True,
-            convexify=False,
-        ),
-        vis_mode="visual"
-    )
+    if ROBOT_MODEL == RobotModelType.MJCF:
+        openarm = scene.add_entity(
+            gs.morphs.MJCF(
+                file=mjcf_str,
+                pos=POS_ORIGIN,
+                euler=BASE_EULER,
+                collision=True,
+                convexify=False,
+            ),
+            vis_mode="visual"
+        )
+    elif ROBOT_MODEL == RobotModelType.URDF:
+        openarm = scene.add_entity(
+            gs.morphs.URDF(
+                file=urdf_str,
+                pos=POS_ORIGIN,
+                euler=BASE_EULER,
+                fixed=True,
+                collision=True
+            ),
+        )
     scene.build()
 
     dofs_idx = [openarm.get_joint(name).dof_idx_local for name in JOINT_NAMES]
@@ -83,7 +91,6 @@ def run_sim(scene: gs.Scene, openarm, dofs_idx):
     increment = COMMAND_STEPS * 0.01 # 1 %
     curr_step = 0
     LOWER_LIMIT, UPPER_LIMIT = openarm.get_dofs_limit()
-    moving_towards = LOWER_LIMIT
     EXAMPLE_INDEX = 0
     GRIPPER_INDEX_LEFT = 7
     GRIPPER_INDEX_RIGHT = 8
@@ -104,6 +111,7 @@ def run_sim(scene: gs.Scene, openarm, dofs_idx):
 
         command_pos[EXAMPLE_INDEX] = (curr_step / COMMAND_STEPS) * (LOWER_LIMIT[EXAMPLE_INDEX] if curr_step < 0 else UPPER_LIMIT[EXAMPLE_INDEX]) 
         command_pos[GRIPPER_INDEX_LEFT] = abs(curr_step / COMMAND_STEPS) * LOWER_LIMIT[GRIPPER_INDEX_LEFT] # negative range of motion only
+        # tendons are unsupported: https://github.com/Genesis-Embodied-AI/Genesis/issues/374
         command_pos[GRIPPER_INDEX_RIGHT] = abs(curr_step / COMMAND_STEPS) * LOWER_LIMIT[GRIPPER_INDEX_RIGHT] # negative range of motion only
 
         if not torch.all((LOWER_LIMIT <= command_pos) & (command_pos <= UPPER_LIMIT)):
@@ -114,7 +122,6 @@ def run_sim(scene: gs.Scene, openarm, dofs_idx):
             openarm.control_dofs_position(command_pos)
 
         scene.step()
-    scene.viewer.stop()
 
 
 if __name__ == "__main__":
