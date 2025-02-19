@@ -4,7 +4,22 @@
 1. [Install ROS 2](https://docs.ros.org/en/jazzy/Installation.html)
 > We recommend using ROS2 Jazzy with Ubuntu Linux 24.04
 
-2. [Install MoveIt2 from source](https://moveit.picknik.ai/main/doc/tutorials/getting_started/getting_started.html). The debian packages are often outdated, which may cause issues.
+Make sure to also install [ros-dev-tools](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html#install-development-tools-optional)
+
+
+2. [Install and build MoveIt2 from source](https://moveit.ai/install-moveit2/source/). The prebuilt debian packages are sometimes outdated, which may cause issues. 
+
+It may be necessary to run a modified version of the build command if your system has less than 64 GB of RAM:
+```sh
+cd $COLCON_WS
+rm -rf build log install
+colcon build --mixin release --parallel-workers 2
+```
+
+After building, rename the workspace:
+```sh
+mv ~/ws_moveit2 ~/ws_moveit
+```
 
 3. [Source the ROS2 install and create a colcon workspace](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html#build-the-workspace)
 
@@ -17,7 +32,7 @@ mkdir -p ~/ws_openarm/src
    
 ```sh
 cd ~/ws_openarm/src
-git clone git@github.com:reazon-research/openarm_ros2.git
+git clone https://github.com/reazon-research/openarm_ros2.git
 ```
 
 5. [Install dependencies with rosdep](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/Rosdep.html)
@@ -27,7 +42,7 @@ sudo rosdep init
 rosdep update
 sudo apt update
 sudo apt dist-upgrade
-rosdep install --from-paths src -y --ignore-src
+rosdep install --from-paths ~/ws_openarm/src -y -r --ignore-src
 ```
 
 6. Build the packages
@@ -44,4 +59,4 @@ source ~/ws_openarm/install/setup.bash
 ros2 launch openarm_moveit_config demo.launch.py
 ```
 
-7. Drag the interactive marker to set a goal position, and press `Plan & Execute` to view the movement.
+8. Drag the interactive marker to set a goal position, and press `Plan & Execute` to view the movement.
