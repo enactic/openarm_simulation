@@ -1,7 +1,6 @@
 # OpenArm Simulation
 
-Examples of OpenArm simulation using various physics engines.
-
+Examples of OpenArm simulation for inverse kinematics and physics simulation.
 
 ## Getting started
 
@@ -9,10 +8,11 @@ Examples of OpenArm simulation using various physics engines.
 ```sh 
 git clone git@github.com:reazon-research/openarm-sim.git
 ```
-1. Run a supported simulator:
+2. Run a supported simulator:
 
 - [MuJoCo](./openarm_mujoco/README_MuJoCo.md)
 - [Genesis](./openarm_genesis/README_Genesis.md)
+- [Moveit2](./openarm_moveit2/README_MoveIt2.md)
 
 ## To Do:
 - Simulators:
