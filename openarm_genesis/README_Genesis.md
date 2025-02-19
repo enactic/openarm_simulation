@@ -28,10 +28,9 @@ pip install -U PyOpenGL
 python3 start_genesis.py
 ```
 
-
-
 ## Compatibility
 
 - Genesis [does not support mimic joints (URDF) or tendons (MJCF)](https://github.com/Genesis-Embodied-AI/Genesis/issues/129), meaning each actuator must be controlled separately.
-- The latest versions of genesis-world are often unstable. In this repo, we use genesis-world==0.2.1
-- Genesis cannot be used with [uv](https://docs.astral.sh/uv/) due to [an issue with OpenGL].(https://github.com/Genesis-Embodied-AI/Genesis/issues/11)
+- MJCF meshes are rendered only when they have the properties `contype` and `conaffinity` set to "0".
+- The latest versions of genesis-world are often unstable. In this repo, we use genesis-world==0.2.1.
+- Genesis cannot be used with [uv](https://docs.astral.sh/uv/) due to [an issue with OpenGL](https://github.com/Genesis-Embodied-AI/Genesis/issues/11).
