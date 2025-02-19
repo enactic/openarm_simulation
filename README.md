@@ -2,6 +2,12 @@
 
 Examples of OpenArm simulation for inverse kinematics and physics simulation.
 
+
+
+https://github.com/user-attachments/assets/7bbe3548-b397-4221-9124-2c797e5500b1
+
+
+
 ## Getting started
 
 1. Clone the repository:
