@@ -9,7 +9,17 @@ os.environ["PYOPENGL_PLATFORM"] = "glx"
 KP = [85.0, 50.0, 30.0, 30.0, 27.5, 35.0, 35.0, 100.0, 100.0]
 KV = [18.5, 12.0, 8.0, 10.0, 3.0, 3.0, 3.0, 20.5, 20.5]
 # mimic joints/tendons are not supported by genesis
-JOINT_NAMES = ["rev1", "rev2", "rev3", "rev4", "rev5", "rev6", "rev7", "slider_left", "slider_right"]
+JOINT_NAMES = [
+    "rev1",
+    "rev2",
+    "rev3",
+    "rev4",
+    "rev5",
+    "rev6",
+    "rev7",
+    "slider_left",
+    "slider_right",
+]
 FORCE_LOWER = [-87, -87, -87, -87, -12, -12, -12, -12, -12]
 FORCE_UPPER = [87, 87, 87, 87, 12, 12, 12, 12, 12]
 ZERO_POS = [0.0] * len(JOINT_NAMES)
@@ -19,28 +29,38 @@ assert len(KP) == len(KV) == len(JOINT_NAMES) == len(FORCE_LOWER) == len(FORCE_U
 
 USE_GPU = False
 
+
 class RobotModelType(Enum):
     MJCF = 1
     URDF = 2
+
+
 ROBOT_MODEL = RobotModelType.MJCF
+
 
 def main() -> None:
     print("Setting up genesis")
-    gs.init(backend=gs.gpu if USE_GPU else gs.cpu, 
-            # logging_level="debug",
-            )
+    gs.init(
+        backend=gs.gpu if USE_GPU else gs.cpu,
+        # logging_level="debug",
+    )
     scene: gs.Scene = gs.Scene(
         sim_options=gs.options.SimOptions(
             substeps=10,
             gravity=(0, 0, -9.81),
         ),
-        show_viewer = gs.platform == "Linux"
+        viewer_options=gs.options.ViewerOptions(
+            camera_pos=(3.5, 0.0, 2.5),
+            camera_lookat=(0.0, 0.0, 0.5),
+            camera_fov=40,
+        ),
+        show_viewer=True,
     )
 
     scene.add_entity(gs.morphs.Plane())
     assets_path = pathlib.Path(__file__).resolve().parent.parent / "assets"
-    urdf_str = str(assets_path/"openarm_grip.urdf")
-    mjcf_str = str(assets_path/"openarm_grip_mjcf.xml")
+    urdf_str = str(assets_path / "openarm_grip.urdf")
+    mjcf_str = str(assets_path / "openarm_grip_mjcf.xml")
 
     POS_ORIGIN = (0, 0, 0)  # m
     BASE_EULER = (0, 0, 0)  # degrees
@@ -55,16 +75,12 @@ def main() -> None:
                 collision=True,
                 convexify=False,
             ),
-            vis_mode="visual"
+            vis_mode="visual",
         )
     elif ROBOT_MODEL == RobotModelType.URDF:
         openarm = scene.add_entity(
             gs.morphs.URDF(
-                file=urdf_str,
-                pos=POS_ORIGIN,
-                euler=BASE_EULER,
-                fixed=True,
-                collision=True
+                file=urdf_str, pos=POS_ORIGIN, euler=BASE_EULER, fixed=True, collision=True
             ),
         )
     scene.build()
@@ -82,13 +98,13 @@ def main() -> None:
     if gs.platform == "Linux":
         run_sim(scene=scene, openarm=openarm, dofs_idx=dofs_idx)
     else:
-        scene.viewer.start()
         gs.tools.run_in_another_thread(fn=run_sim, args=(scene, openarm, dofs_idx))
+        scene.viewer.start()
 
 
 def run_sim(scene: gs.Scene, openarm, dofs_idx):
     COMMAND_STEPS = 100
-    increment = COMMAND_STEPS * 0.01 # 1 %
+    increment = COMMAND_STEPS * 0.01  # 1 %
     curr_step = 0
     LOWER_LIMIT, UPPER_LIMIT = openarm.get_dofs_limit()
     EXAMPLE_INDEX = 0
@@ -109,14 +125,20 @@ def run_sim(scene: gs.Scene, openarm, dofs_idx):
 
         curr_step += increment
 
-        command_pos[EXAMPLE_INDEX] = (curr_step / COMMAND_STEPS) * (LOWER_LIMIT[EXAMPLE_INDEX] if curr_step < 0 else UPPER_LIMIT[EXAMPLE_INDEX]) 
-        command_pos[GRIPPER_INDEX_LEFT] = abs(curr_step / COMMAND_STEPS) * LOWER_LIMIT[GRIPPER_INDEX_LEFT] # negative range of motion only
-        # tendons are unsupported: https://github.com/Genesis-Embodied-AI/Genesis/issues/374
-        command_pos[GRIPPER_INDEX_RIGHT] = abs(curr_step / COMMAND_STEPS) * LOWER_LIMIT[GRIPPER_INDEX_RIGHT] # negative range of motion only
+        command_pos[EXAMPLE_INDEX] = (curr_step / COMMAND_STEPS) * (
+            LOWER_LIMIT[EXAMPLE_INDEX] if curr_step < 0 else UPPER_LIMIT[EXAMPLE_INDEX]
+        )
+        command_pos[GRIPPER_INDEX_LEFT] = (
+            abs(curr_step / COMMAND_STEPS) * LOWER_LIMIT[GRIPPER_INDEX_LEFT]
+        )  # negative range of motion only
+        # tendons and mimic joints are unsupported
+        command_pos[GRIPPER_INDEX_RIGHT] = (
+            abs(curr_step / COMMAND_STEPS) * LOWER_LIMIT[GRIPPER_INDEX_RIGHT]
+        )  # negative range of motion only
 
         if not torch.all((LOWER_LIMIT <= command_pos) & (command_pos <= UPPER_LIMIT)):
             increment *= -1.0
-            print(f"Control positions out of bounds, ignoring")
+            print("Control positions out of bounds, ignoring")
         else:
             print(f"Sent command {command_pos}")
             openarm.control_dofs_position(command_pos)
