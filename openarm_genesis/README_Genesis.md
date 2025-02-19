@@ -1,5 +1,9 @@
 ## OpenArm Simulation with Genesis
 
+
+https://github.com/user-attachments/assets/4eaf1445-3274-4b60-ab9d-4c2eec123964
+
+
 1. [Install conda](https://conda-forge.org/download/)
 
 2. Change to the openarm_genesis directory:
