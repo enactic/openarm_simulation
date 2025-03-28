@@ -49,3 +49,4 @@ conda env update --file environment.yaml  --prune --name openarm_genesis
 - MJCF meshes are rendered only when they have the properties `contype` and `conaffinity` set to "0".
 - The latest versions of genesis-world are often unstable. In this repo, we use genesis-world==0.2.1.
 - Genesis cannot be used with [uv](https://docs.astral.sh/uv/) due to [an issue with OpenGL](https://github.com/Genesis-Embodied-AI/Genesis/issues/11).
+- [MJCF collision boxes are unsupported](https://github.com/Genesis-Embodied-AI/Genesis/pull/734)
