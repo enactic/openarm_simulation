@@ -21,6 +21,10 @@ git clone git@github.com:reazon-research/openarm-sim.git
 - [Moveit2](./openarm_moveit2/README_MoveIt2.md)
 
 ## To Do:
+
+- Real2Sim
+  - [ ] Teleop simulation robot with real arms
+
 - Simulators:
   - [ ] Gazebo with MoveIt2
   

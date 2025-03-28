@@ -1,13 +1,22 @@
 ## OpenArm Inverse Kinematics with MoveIt2 (ROS2)
 
 
-1. [Install ROS 2](https://docs.ros.org/en/jazzy/Installation.html)
-> We recommend using ROS2 Jazzy with Ubuntu Linux 24.04
+1. [Install ROS 2](https://docs.ros.org/en/humble/Installation.html)
+> We recommend using ROS2 Humble with Ubuntu Linux 22.04
 
 Make sure to also install [ros-dev-tools](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html#install-development-tools-optional)
 
 
-2. [Install and build MoveIt2 from source](https://moveit.ai/install-moveit2/source/). The prebuilt debian packages are sometimes outdated, which may cause issues. 
+2. Install MoveIt2
+
+a. ROS2 Humble: Install from debian packages
+
+```sh
+sudo apt update
+sudo apt install -y ros-humble-moveit
+```
+
+b. [ROS2 Jazzy: Install and build MoveIt2 from source](https://moveit.ai/install-moveit2/source/). The prebuilt debian packages are sometimes outdated, which may cause issues. 
 
 It may be necessary to run a modified version of the build command if your system has less than 64 GB of RAM:
 ```sh
@@ -21,10 +30,10 @@ After building, rename the workspace:
 mv ~/ws_moveit2 ~/ws_moveit
 ```
 
-3. [Source the ROS2 install and create a colcon workspace](https://docs.ros.org/en/jazzy/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html#build-the-workspace)
+3. [Source the ROS2 install and create a colcon workspace](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html#build-the-workspace)
 
 ```sh
-source /opt/ros/jazzy/setup.bash
+source /opt/ros/humble/setup.bash
 mkdir -p ~/ws_openarm/src
 ```
 
