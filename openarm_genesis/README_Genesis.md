@@ -28,6 +28,12 @@ pip install -U PyOpenGL
 python3 start_genesis.py
 ```
 
+## Restoring the environment
+
+```sh
+conda env update --file environment.yaml  --prune --name openarm_genesis
+```
+
 ## Compatibility
 
 - Genesis [does not support mimic joints (URDF) or tendons (MJCF)](https://github.com/Genesis-Embodied-AI/Genesis/issues/129), meaning each actuator must be controlled separately.

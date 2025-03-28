@@ -6,6 +6,7 @@ from enum import Enum
 
 os.environ["PYOPENGL_PLATFORM"] = "glx"
 
+print(f"Genesis version {gs.__version__}")
 KP = [85.0, 50.0, 30.0, 30.0, 27.5, 35.0, 35.0, 100.0, 100.0]
 KV = [18.5, 12.0, 8.0, 10.0, 3.0, 3.0, 3.0, 20.5, 20.5]
 # mimic joints/tendons are not supported by genesis
