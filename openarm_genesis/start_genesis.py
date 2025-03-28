@@ -59,7 +59,7 @@ def main() -> None:
     )
 
     scene.add_entity(gs.morphs.Plane())
-    assets_path = pathlib.Path(__file__).resolve().parent.parent / "assets"
+    assets_path = pathlib.Path(__file__).resolve().parent.parent / "assets/genesis"
     urdf_str = str(assets_path / "openarm_grip.urdf")
     mjcf_str = str(assets_path / "openarm_grip_mjcf.xml")
 

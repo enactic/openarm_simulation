@@ -3,6 +3,7 @@ import torch
 import genesis as gs
 import pathlib
 from enum import Enum
+
 os.environ["PYOPENGL_PLATFORM"] = "glx"
 
 print(f"Genesis version {gs.__version__}")
@@ -27,7 +28,7 @@ JOINT_NAMES = [
     "right_rev6",
     "right_rev7",
     "right_left_pris1",
-    "right_right_pris2"
+    "right_right_pris2",
 ]
 FORCE_LOWER = [-87, -87, -87, -87, -12, -12, -12, -12, -12] * 2
 FORCE_UPPER = [87, 87, 87, 87, 12, 12, 12, 12, 12] * 2
@@ -67,7 +68,7 @@ def main() -> None:
     )
 
     scene.add_entity(gs.morphs.Plane())
-    assets_path = pathlib.Path(__file__).resolve().parent.parent / "assets"
+    assets_path = pathlib.Path(__file__).resolve().parent.parent / "assets/genesis"
     mjcf_str = str(assets_path / "openarm_bimanual.mjcf.xml")
 
     POS_ORIGIN = (0, 0, 0)  # m
@@ -79,7 +80,7 @@ def main() -> None:
             file=mjcf_str,
             pos=POS_ORIGIN,
             euler=BASE_EULER,
-            collision=False, # box collision not supported for MJCF
+            collision=False,  # box collision not supported for MJCF
             convexify=False,
         ),
         vis_mode="visual",

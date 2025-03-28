@@ -1,8 +1,11 @@
 import mujoco
 import mujoco.viewer
 import time
+import pathlib
 
-m = mujoco.MjModel.from_xml_path("../assets/openarm_bimanual_mjcf.xml")
+# run with `mjpython start_mujoco.py``
+assets_path = pathlib.Path(__file__).resolve().parent.parent / "assets/mujoco"
+m = mujoco.MjModel.from_xml_path(str(assets_path / "openarm_bimanual.mjcf.xml"))
 d = mujoco.MjData(m)
 
 with mujoco.viewer.launch_passive(m, d) as viewer:
