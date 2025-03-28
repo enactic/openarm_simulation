@@ -24,9 +24,18 @@ pip install -U PyOpenGL
 
 5. Run the demo script to verify genesis is working with OpenArm. The first run will take some time to compile.
    
+Single arm:
+
 ```sh
 python3 start_genesis.py
 ```
+
+Bimanual with no collisions:
+
+```sh
+python3 start_genesis_bimanual.py
+```
+
 
 ## Restoring the environment
 
