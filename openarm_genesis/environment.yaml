@@ -15,3 +15,4 @@ dependencies:
       - taichi==1.7.3
       - torch==2.6.0
       - torchvision==0.21.0
+      - libigl==2.5.1
