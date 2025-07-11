@@ -12,7 +12,7 @@ cd mujoco-3.2.7/bin
 ./mujoco-3.2.7/bin/simulate
 ```
 
-2. [Download the OpenArm MJCF and assets](https://github.com/reazon-research/openarm_mjcf/tree/master) and drag the `*.xml` file into the simulation window.
+2. [Download the OpenArm MJCF and assets](https://github.com/enactic/openarm_mjcf/tree/master) and drag the `*.xml` file into the simulation window.
 ```sh
-git clone git@github.com:reazon-research/openarm_mjcf.git
+git clone git@github.com:enactic/openarm_mjcf.git
 ```

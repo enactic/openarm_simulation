@@ -12,7 +12,7 @@ https://github.com/user-attachments/assets/7bbe3548-b397-4221-9124-2c797e5500b1
 
 1. Clone the repository:
 ```sh 
-git clone --recurse-submodules https://github.com/reazon-research/openarm_simulation.git
+git clone --recurse-submodules https://github.com/enactic/openarm_simulation.git
 ```
 2. Run a supported simulator:
 

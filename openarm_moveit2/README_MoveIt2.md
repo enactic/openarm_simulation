@@ -37,11 +37,11 @@ source /opt/ros/humble/setup.bash
 mkdir -p ~/ws_openarm/src
 ```
 
-4. Clone the [openarm_ros2 repository](https://github.com/reazon-research/openarm_ros2) into the workspace:
+4. Clone the [openarm_ros2 repository](https://github.com/enactic/openarm_ros2) into the workspace:
    
 ```sh
 cd ~/ws_openarm/src
-git clone https://github.com/reazon-research/openarm_ros2.git
+git clone https://github.com/enactic/openarm_ros2.git
 ```
 
 5. [Install dependencies with rosdep](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/Rosdep.html)
