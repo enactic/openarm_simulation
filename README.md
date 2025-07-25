@@ -1,5 +1,12 @@
 # OpenArm Simulation
 
+NOTE: This repository is archived. Because we've created separated repositories for each simulator. For examples:
+
+* https://github.com/enactic/openarm_isaac_lab
+* https://github.com/enactic/openarm_mujoco
+* https://github.com/enactic/openarm_ros2
+
+
 Examples of OpenArm simulation for inverse kinematics and physics simulation.
 
 
